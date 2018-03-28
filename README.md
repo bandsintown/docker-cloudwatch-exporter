@@ -1,6 +1,6 @@
 [![dockeri.co](http://dockeri.co/image/bandsintown/cloudwatch-exporter)](https://hub.docker.com/r/bandsintown/cloudwatch-exporter/)
 
-[![Build status](https://badge.buildkite.com/e3af3f8a581ca8f2e426f7bbd0535340dbc62d77aa7ad4368c.svg)](https://buildkite.com/bandsintown/docker-cloudwatch-exporter)
+[![Build status](https://badge.buildkite.com/4a3102549e1d7e97daad69047e5c2134216c0ebe005c9b4df4.svg)](https://buildkite.com/bandsintown/docker-cloudwatch-exporter)
 [![GitHub issues](https://img.shields.io/github/issues/bandsintown/docker-cloudwatch-exporter.svg "GitHub issues")](https://github.com/bandsintown/docker-cloudwatch-exporter)
 [![GitHub stars](https://img.shields.io/github/stars/bandsintown/docker-cloudwatch-exporter.svg "GitHub stars")](https://github.com/bandsintown/docker-cloudwatch-exporter)
 [![Docker layers](https://images.microbadger.com/badges/image/bandsintown/cloudwatch-exporter.svg)](https://microbadger.com/images/bandsintown/cloudwatch-exporter)
