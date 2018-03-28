@@ -1,3 +1,0 @@
-{{ $service_name := or (env "SERVICE_NAME") "statsd-exporter" }}
-{{ $default_conf := file "/etc/statsd_exporter/statsd_exporter-default.config" }}
-{{ keyOrDefault (printf "service/%s/statsd_exporter.config" $service_name) $default_conf }}

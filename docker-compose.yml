@@ -24,22 +24,20 @@ services:
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
 
-  # Statsd-exporter
-  statsd_exporter:
-   # image: bandsintown/statsd-exporter:0.4.0
+  # Cloudwatch exporter
+  cloudwatch-exporter:
     build:
       context: .
       dockerfile: versions/latest/Dockerfile
-    container_name: statsd_exporter
+    command: "java -jar /cloudwatch_exporter.jar 9106 /config/config.yml"
     depends_on:
       - consul
     ports:
-      - 9102:9102
-      - 9125/udp
+      - 9106:9106
     environment:
       - SERVICE_TAGS=metrics
-      - SERVICE_9102_NAME=statsd-exporter
-      - SERVICE_9125_IGNORE=true
+      - SERVICE_NAME=cloudwatch-exporter
+      - CONSUL_HTTP_ADDR=consul:8500
 
   # Consulator
   consulator:

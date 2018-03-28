@@ -5,20 +5,20 @@ load helpers
 consul_service="consul"
 address="$(dig +short ${consul_service})"
 port="8500"
-service="statsd-exporter"
+service="cloudwatch-exporter"
 
-@test "Check '/etc/statsd_exporter/statsd_exporter.config' configuration is well rendered" {
+@test "Check '/config/config.yml' configuration is well rendered" {
 
-  value="content"
-  template="/etc/consul-template/templates/statsd_exporter.ctmpl"
-  file="/etc/statsd_exporter/statsd_exporter.config"
+  content="region: eu-west-1"
+  template="/etc/consul-template/templates/config.ctmpl"
+  file="/config/config.yml"
 
   # Remove the default configuration
   status=$(rm -f ${file};echo $?)
   [ "$status" -eq 0 ]
 
   # Register the file
-  run register_key "service/${service}/statsd_exporter.config" "${value}"
+  run register_key "service/${service}/config.yml" "${content}"
   [ "$status" -eq 0 ]
 
   # Call consul template to generate the configuration
@@ -30,7 +30,7 @@ service="statsd-exporter"
   [ "$status" -eq 0 ]
 
   # Check we can find the content
-  status=$(grep "${value}" ${file} 2>&1 > /dev/null;echo $?)
+  status=$(grep "${content}" ${file} 2>&1 > /dev/null;echo $?)
   [ "$status" -eq 0 ]
 
 }

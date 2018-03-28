@@ -1,4 +1,4 @@
-@test "'statsd_exporter' should be present" {
-  run /bin/statsd_exporter -version
+@test "'java' should be present" {
+  run java -version
   [ $status -eq 0 ]
 }

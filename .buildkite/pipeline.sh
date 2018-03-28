@@ -16,7 +16,7 @@ if [ "$RELEASE_NAME" == "n/a"  -a "$BUILDKITE_BRANCH" == 'master' ]; then
 cat <<EOF
 steps:
   - label: ':hammer: Run tests'
-    command: bin/statsd_exporter tests --build
+    command: bin/cloudwatch-exporter tests --build
   - wait
   - block: ':github: Release'
     prompt: "Fill out the details for release"
@@ -53,7 +53,7 @@ steps:
     command: .buildkite/release.sh
   - wait
   - label: ':docker: Release on Dockerhub'
-    command: bin/statsd_exporter release
+    command: bin/cloudwatch-exporter release
 EOF
 exit 0
 fi
@@ -62,5 +62,5 @@ fi
 cat <<EOF
 steps:
   - label: ':hammer: Run tests'
-    command: bin/statsd_exporter tests --build
+    command: bin/cloudwatch-exporter tests --build
 EOF
