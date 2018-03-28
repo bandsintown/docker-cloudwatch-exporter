@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+
+  # Consul
+  consul:
+    image: consul:0.7.5
+    command: "agent -dev -client 0.0.0.0 -ui"
+    container_name: consul
+    ports:
+      - 8301
+      - 8500:8500
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - SERVICE_IGNORE=true
+
+  # Registrator
+  registrator:
+    image: nhuray/registrator:v7
+    command: "-internal consul://consul:8500"
+    container_name: registrator
+    depends_on:
+      - consul
+    volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+
+  # Statsd-exporter
+  statsd_exporter:
+   # image: bandsintown/statsd-exporter:0.4.0
+    build:
+      context: .
+      dockerfile: versions/latest/Dockerfile
+    container_name: statsd_exporter
+    depends_on:
+      - consul
+    ports:
+      - 9102:9102
+      - 9125/udp
+    environment:
+      - SERVICE_TAGS=metrics
+      - SERVICE_9102_NAME=statsd-exporter
+      - SERVICE_9125_IGNORE=true
+
+  # Consulator
+  consulator:
+    image: lewispeckover/consulator
+    command: "sync -prefix=service /app/consulator.yml"
+    container_name: consulator
+    depends_on:
+      - consul
+    volumes:
+      - ./consulator.yml:/app/consulator.yml
+    environment:
+      - CONSUL_HTTP_ADDR=consul:8500

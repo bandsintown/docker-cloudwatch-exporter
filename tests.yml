@@ -1,0 +1,35 @@
+version: '2'
+
+# Defines the services
+services:
+
+  # Test image (packages, services, scripts)
+  test-image:
+    image: bandsintown/statsd-exporter-test:${VERSION}
+    command: bats /tests/image
+    environment:
+      - VERSION=${VERSION}
+
+  # Tests for consul template
+  test-consul-template:
+    image: bandsintown/statsd-exporter-test:${VERSION}
+    command: dockerize -wait http://consul:8500 -timeout 10s bats /tests/consul-template
+    depends_on:
+      - consul
+    environment:
+      - DISABLE_CONSUL_TEMPLATE=true
+      - CONSUL_HTTP_ADDR=consul:8500
+      - VERSION=${VERSION}
+
+  # Consul
+  consul:
+    image: consul
+    command: "agent -dev -client 0.0.0.0 -ui"
+    ports:
+      - 8500
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+
+    # We disable the log in order to increase lisibility in CI
+    logging:
+      driver: "none"

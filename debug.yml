@@ -1,0 +1,23 @@
+version: '2'
+
+# Defines the services
+services:
+
+  # Debug tests for image (packages, services, scripts)
+  test-image:
+    command: bash
+    stdin_open: true
+    tty: true
+    working_dir: /tests/image
+    volumes:
+      - ./tests:/tests
+
+  # Test debug for consul template
+  test-consul-template:
+    command: bash
+    stdin_open: true
+    tty: true
+    working_dir: /tests/consul-template
+    volumes:
+      - ./tests:/tests
+      - ./rootfs/etc/consul-template:/etc/consul-template

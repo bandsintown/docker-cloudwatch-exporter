@@ -1,0 +1,7 @@
+# Prometheus Configuration
+statsd-exporter:
+  statsd_exporter.config: |
+    consul.*.runtime.*
+    name="consul_runtime"
+    type="$2"
+    container="$1"
