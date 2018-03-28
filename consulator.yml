@@ -1,11 +1,26 @@
 # Prometheus Configuration
+prometheus:
+  global.yml: |
+    global:
+      scrape_interval:     15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: 'consul'
+        consul_sd_configs:
+          - server: 'consul:8500'
+        relabel_configs:
+         - source_labels: [__meta_consul_tags]
+           regex: .*,metrics,.*
+           action: keep
+         - source_labels: [__meta_consul_service]
+           target_label: job
+
+# Cloudwatch exporter Configuration
 cloudwatch-exporter:
   config.yml: |
-    region: eu-west-1
+    region: us-east-1
     metrics:
-     - aws_namespace: AWS/ELB
-       aws_metric_name: RequestCount
-       aws_dimensions: [AvailabilityZone, LoadBalancerName]
-       aws_dimension_select:
-         LoadBalancerName: [myLB]
-       aws_statistics: [Sum]
+     - aws_namespace: AWS/Billing
+       aws_metric_name: EstimatedCharges
+

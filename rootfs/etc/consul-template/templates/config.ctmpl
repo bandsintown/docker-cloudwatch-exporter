@@ -1,2 +1,2 @@
-{{- $default_conf := file "/config/config.yml" }}
+{{- $default_conf := file "/config/config-default.yml" }}
 {{ keyOrDefault "service/cloudwatch-exporter/config.yml" $default_conf }}

@@ -9,7 +9,7 @@ service="cloudwatch-exporter"
 
 @test "Check '/config/config.yml' configuration is well rendered" {
 
-  content="region: eu-west-1"
+  content="region: eu-east-1"
   template="/etc/consul-template/templates/config.ctmpl"
   file="/config/config.yml"
 

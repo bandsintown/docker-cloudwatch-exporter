@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv sh
+
+if [ "${DISABLE_CONSUL_TEMPLATE}" = "true" ]; then
+  exit 0
+fi
+
+if [ -n "${CONSUL_HTTP_ADDR}" -a -d /etc/consul-template/conf ]; then
+  consul-template -consul-addr ${CONSUL_HTTP_ADDR} -config "/etc/consul-template/conf"
+fi

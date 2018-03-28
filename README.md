@@ -18,6 +18,9 @@ We built this image to use Consul and Consul Template to be able to configure cl
 
 To use this cloudwatch-exporter with Consul you have to create a Consul key at `service/cloudwatch-exporter/config.yml`
 
+A docker-compose file is bundled with the project to test the exporter with Consul. 
+To test it you have to replace the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` by yours (don't commit them ok !!!).
+
 ## Credentials and permissions
 
 The CloudWatch Exporter uses the

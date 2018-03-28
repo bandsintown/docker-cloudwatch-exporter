@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv sh
+
+# Defines the number of CPU cores
+echo -n "$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1)" > /var/run/s6/container_environment/NPROC
+
+# Defines the EC2 instance ip on aws and infer consul address
+EC2_IP="$(curl -s --connect-timeout 5 http://169.254.169.254/latest/meta-data/local-ipv4)"
+if [ -n "${EC2_IP}" ]; then
+  echo -n "${EC2_IP}" > /var/run/s6/container_environment/EC2_IP
+  test -n "${CONSUL_HTTP_ADDR}" || echo -n "${EC2_IP}:${CONSUL_HTTP_PORT:-8500}" > /var/run/s6/container_environment/CONSUL_HTTP_ADDR
+fi

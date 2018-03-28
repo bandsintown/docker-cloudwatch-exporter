@@ -2,6 +2,9 @@ version: '2'
 
 services:
 
+  # Service Discovery
+  # --------------------------------------------------------------------------------------------------------------------
+
   # Consul
   consul:
     image: consul:0.7.5
@@ -24,12 +27,14 @@ services:
     volumes:
     - /var/run/docker.sock:/tmp/docker.sock
 
+  # Test service
+  # --------------------------------------------------------------------------------------------------------------------
+
   # Cloudwatch exporter
   cloudwatch-exporter:
     build:
       context: .
       dockerfile: versions/latest/Dockerfile
-    command: "java -jar /cloudwatch_exporter.jar 9106 /config/config.yml"
     depends_on:
       - consul
     ports:
@@ -38,6 +43,9 @@ services:
       - SERVICE_TAGS=metrics
       - SERVICE_NAME=cloudwatch-exporter
       - CONSUL_HTTP_ADDR=consul:8500
+      # Replace this by your AWS credential to test the service
+      - AWS_ACCESS_KEY_ID=xxxxxx
+      - AWS_SECRET_ACCESS_KEY=xxxxxxx
 
   # Consulator
   consulator:
@@ -50,3 +58,15 @@ services:
       - ./consulator.yml:/app/consulator.yml
     environment:
       - CONSUL_HTTP_ADDR=consul:8500
+
+  # Monitoring
+  # --------------------------------------------------------------------------------------------------------------------
+
+  prometheus:
+    image: bandsintown/prometheus:2.1.0
+    environment:
+      - CONSUL_HTTP_ADDR=consul:8500
+      - SERVICE_NAME=prometheus
+      - SERVICE_TAGS=web,metrics
+    ports:
+      - 9090:9090
